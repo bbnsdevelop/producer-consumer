@@ -1,5 +1,10 @@
 package br.com.producerconsumer.client;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -8,14 +13,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class ConsumerControllerClient {
+	
+	
+	@Autowired
+	private DiscoveryClient discoveryClient;
 
 	public void getProducerEmployee() {
 		
-		String baseUrl = "http://localhost:8080/api/employee";
+		List<ServiceInstance> instances = discoveryClient.getInstances("producer-consumer");
+		ServiceInstance serviceInstance=instances.get(0);
+		
+		String baseUrl=serviceInstance.getUri().toString();
+		
+		baseUrl=baseUrl+"/employee";
 		
 		RestTemplate rest = new RestTemplate();
-		
-		ResponseEntity<String> response = null;
+		ResponseEntity<String> response=null;
+
 		
 		try {
 			response = rest.exchange(baseUrl, HttpMethod.GET, getHeaders(), String.class);
