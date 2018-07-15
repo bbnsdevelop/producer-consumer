@@ -1,7 +1,10 @@
 package br.com.producerconsumer.service.impl;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
 import br.com.producerconsumer.client.ConsumerControllerClient;
 import br.com.producerconsumer.client.domain.Employee;
@@ -15,7 +18,14 @@ public class ConsumerClientServiceImpl implements ConsumerClientService{
 	
 	@Override
 	public Employee getEmployee() {
-		return consumerControllerClient.getProducerEmployee();
+		Employee employee = new Employee();
+		try {
+			employee = consumerControllerClient.getEmployee();
+		} catch (RestClientException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return employee;
 	}
 
 }
