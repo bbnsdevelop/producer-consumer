@@ -32,9 +32,10 @@ public class ConsumerControllerClient {
 	public Employee getEmployee() throws RestClientException, IOException {
 		
 		List<ServiceInstance> instances = discoveryClient.getInstances("producer");
-		ServiceInstance serviceInstance=instances.get(0);
+		ServiceInstance serviceInstance = instances.get(0);
 		
-		String baseUrl=serviceInstance.getUri().toString();
+		String baseUrl = serviceInstance.getUri().toString();
+		baseUrl = baseUrl + "/api/employee";
 		log.info("url {}", baseUrl);
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<String> response = null;
