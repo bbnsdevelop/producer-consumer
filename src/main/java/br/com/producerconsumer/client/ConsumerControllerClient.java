@@ -1,13 +1,12 @@
 package br.com.producerconsumer.client;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -27,12 +26,11 @@ public class ConsumerControllerClient {
 	private static final Logger log = LoggerFactory.getLogger(ConsumerControllerClient.class);
 	
 	@Autowired
-	private DiscoveryClient discoveryClient;
+	private LoadBalancerClient loadBalancer;
 	
 	public Employee getEmployee() throws RestClientException, IOException {
 		
-		List<ServiceInstance> instances = discoveryClient.getInstances("producer");
-		ServiceInstance serviceInstance = instances.get(0);
+		ServiceInstance serviceInstance = loadBalancer.choose("producer");
 		
 		String baseUrl = serviceInstance.getUri().toString();
 		baseUrl = baseUrl + "/api/employee";
