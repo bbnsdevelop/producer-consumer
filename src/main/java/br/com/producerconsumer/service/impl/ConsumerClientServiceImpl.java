@@ -20,9 +20,21 @@ public class ConsumerClientServiceImpl implements ConsumerClientService{
 	public Employee getEmployee() {
 		Employee employee = new Employee();
 		try {
-			employee = consumerControllerClient.getEmployee();
+			for(int i=0;i<100;i++)	
+				employee = consumerControllerClient.getEmployee();
 		} catch (RestClientException | IOException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return employee;
+	}
+
+	@Override
+	public Employee getEmployee2() {
+		Employee employee = new Employee();
+		try {
+			employee = consumerControllerClient.getEmployeeFeign();
+		} catch (RestClientException | IOException e) {			
 			e.printStackTrace();
 		}
 		return employee;

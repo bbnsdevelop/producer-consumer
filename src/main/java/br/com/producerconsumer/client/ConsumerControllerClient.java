@@ -19,19 +19,34 @@ import org.springframework.web.client.RestTemplate;
 import com.google.gson.Gson;
 
 import br.com.producerconsumer.client.domain.Employee;
+import br.com.producerconsumer.service.feiggnClient.ConsumerRemoteCallProduceService;
 
 @Controller
 public class ConsumerControllerClient {
 
 	private static final Logger log = LoggerFactory.getLogger(ConsumerControllerClient.class);
-	
+
 	@Autowired
 	private LoadBalancerClient loadBalancer;
-	
+
+	@Autowired
+	private ConsumerRemoteCallProduceService feignLoadBalancer;
+
+	public Employee getEmployeeFeign() throws RestClientException, IOException {
+		Employee emp = new Employee();
+		try {
+			emp = feignLoadBalancer.getData();
+			log.info("response Employee id {}", emp.getId());
+		} catch (Exception ex) {
+			log.error("erro ao comunicar com o servico, causa {}", ex.getMessage());
+		}
+		return emp;
+	}
+
 	public Employee getEmployee() throws RestClientException, IOException {
-		
+
 		ServiceInstance serviceInstance = loadBalancer.choose("producer");
-		
+
 		String baseUrl = serviceInstance.getUri().toString();
 		baseUrl = baseUrl + "/api/employee";
 		log.info("url {}", baseUrl);
