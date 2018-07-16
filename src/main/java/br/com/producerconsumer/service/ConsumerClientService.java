@@ -7,4 +7,6 @@ public interface ConsumerClientService {
 	public Employee getEmployee();
 	
 	public Employee getEmployee2();
+
+	public Employee getEmployeeZull();
 }

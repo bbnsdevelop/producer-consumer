@@ -26,4 +26,9 @@ public class ConsumerClientProducerController {
 	public ResponseEntity<Employee> getEmployee(){
 		return ResponseEntity.status(HttpStatus.OK).body(consumerClientService.getEmployee2());
 	}
+	
+	@GetMapping("/consumer/zull")
+	public ResponseEntity<Employee> getEmployeeZull(){
+		return ResponseEntity.status(HttpStatus.OK).body(consumerClientService.getEmployeeZull());
+	}
 }

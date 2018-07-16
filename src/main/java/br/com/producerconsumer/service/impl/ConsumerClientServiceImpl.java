@@ -40,4 +40,15 @@ public class ConsumerClientServiceImpl implements ConsumerClientService{
 		return employee;
 	}
 
+	@Override
+	public Employee getEmployeeZull() {
+		Employee employee = new Employee();
+		try {
+			employee = consumerControllerClient.getEmployeeZull();
+		} catch (RestClientException | IOException e) {			
+			e.printStackTrace();
+		}
+		return employee;
+	}
+
 }
